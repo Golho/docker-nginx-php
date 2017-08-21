@@ -1,0 +1,25 @@
+# docker-compose.yml
+version: "3"
+
+services:
+  web:
+    image: nginx:latest
+    ports:
+      - "8080:80"
+    volumes:
+      - ./public:/usr/share/nginx/html
+      - ./site.conf:/etc/nginx/conf.d/site.conf
+    depends_on:
+      - php-fpm
+      - db
+  php-fpm:
+    build: ./docker/php
+    volumes:
+      - ./public:/usr/share/nginx/html
+  db:
+    image: mysql:latest
+    environment:
+      MYSQL_ROOT_PASSWORD: password
+      MYSQL_DATABASE: database
+      MYSQL_USER: user
+      MYSQL_PASSWORD: password
